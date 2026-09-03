@@ -1,0 +1,10 @@
+.venv*/
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+output/*.png
+output/*.pdf
+.DS_Store
+.venv2
