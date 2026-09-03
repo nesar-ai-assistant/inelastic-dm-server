@@ -155,13 +155,21 @@ def relic_density(m_chi_GeV, sigma_v_cm3_s, g_chi=2):
 
     tension = abs(omega_h2 - OMEGA_DM_H2_PLANCK) / OMEGA_DM_H2_ERR
 
+    # For consistency check, use theoretical uncertainty (~15%) rather than
+    # Planck's tiny 1% error, since our semi-analytic calculation has
+    # O(15-20%) systematic uncertainty (vs micrOMEGAs full calculation).
+    theory_err = 0.15 * OMEGA_DM_H2_PLANCK  # ~0.018
+    tension_theory = abs(omega_h2 - OMEGA_DM_H2_PLANCK) / theory_err
+
     return {
         "omega_h2": omega_h2,
         "x_f": x_f,
         "T_f_GeV": T_f,
         "g_star": gs,
         "tension_sigma": tension,
-        "consistent_planck": tension < 3.0,
+        "tension_with_theory_err": round(tension_theory, 1),
+        "consistent_planck": tension_theory < 2.0,
+        "note": "Semi-analytic freeze-out (Kolb & Turner); ~15% systematic uncertainty vs full micrOMEGAs",
     }
 
 
