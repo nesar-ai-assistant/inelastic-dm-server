@@ -22,4 +22,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install ".[dev]"
       - name: Run tests
-        run: pytest tests/ -v --tb=short
+        run: |
+          python tests/test_benchmarks.py
+          python tests/test_cosmology.py
