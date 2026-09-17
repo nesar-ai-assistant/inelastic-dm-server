@@ -27,3 +27,6 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 include = ["tools*", "mcp_server*"]
+
+[tool.mcp-server]
+tool_modules = ["mcp_server.dispatch"]
