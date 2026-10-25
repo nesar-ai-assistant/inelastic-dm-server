@@ -168,7 +168,12 @@ def relic_density(m_chi_GeV, sigma_v_cm3_s, g_chi=2):
         "g_star": gs,
         "tension_sigma": tension,
         "tension_with_theory_err": round(tension_theory, 1),
-        "consistent_planck": tension_theory < 2.0,
+        # NOTE: this flag is deliberately computed against the ~15% semi-analytic
+        # theory systematic (tension_with_theory_err), NOT against Planck's own
+        # ~1% error (tension_sigma) — the two can legitimately disagree (e.g.
+        # tension_sigma=25 with consistent_within_theory_err=True for a 1 TeV
+        # pure higgsino). Check tension_sigma directly for Planck-only agreement.
+        "consistent_within_theory_err": tension_theory < 2.0,
         "note": "Semi-analytic freeze-out (Kolb & Turner); ~15% systematic uncertainty vs full micrOMEGAs",
     }
 

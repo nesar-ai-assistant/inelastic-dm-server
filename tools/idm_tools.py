@@ -160,7 +160,7 @@ def compute_relic_density_tool(m_chi_GeV=1100.0, is_higgsino=True,
             "planck_value": OMEGA_DM_H2_PLANCK,
             "planck_error": OMEGA_DM_H2_ERR,
             "tension_sigma": round(result["tension_sigma"], 1),
-            "consistent_planck": result["consistent_planck"],
+            "consistent_within_theory_err": result["consistent_within_theory_err"],
         },
         "freeze_out": {
             "x_f": round(result["x_f"], 1),
@@ -170,8 +170,8 @@ def compute_relic_density_tool(m_chi_GeV=1100.0, is_higgsino=True,
         "interpretation": (
             f"{'Higgsino' if is_higgsino else 'Generic WIMP'} at "
             f"m_chi={m_chi_GeV:.0f} GeV: Omega h^2 = {result['omega_h2']:.4f} "
-            f"({'consistent' if result['consistent_planck'] else 'inconsistent'} "
-            f"with Planck at {result['tension_sigma']:.1f}sigma). "
+            f"({'consistent' if result['consistent_within_theory_err'] else 'inconsistent'} "
+            f"with Planck at {result['tension_sigma']:.1f}sigma, within theory uncertainty). "
             f"Freeze-out at T_f = {result['T_f_GeV']:.2f} GeV."
         ),
         "references": [
@@ -214,7 +214,7 @@ def check_all_constraints_tool(m_chi_GeV=1100.0, delta_keV=350.0,
 
     # Aggregate verdict
     all_pass = (
-        relic.get("consistent_planck", False)
+        relic.get("consistent_within_theory_err", False)
         and not indirect["excluded"]
         and not cmb["excluded"]
     )
@@ -229,7 +229,7 @@ def check_all_constraints_tool(m_chi_GeV=1100.0, delta_keV=350.0,
         "relic_density": {
             "omega_h2": round(relic["omega_h2"], 4),
             "tension_sigma": round(relic.get("tension_sigma", 0), 1),
-            "passes": relic.get("consistent_planck", False),
+            "passes": relic.get("consistent_within_theory_err", False),
         },
         "direct_detection": {
             "N_expected_LZ": round(N_lz, 3),
@@ -290,7 +290,7 @@ def scan_mass_splitting_tool(
                 r = relic_density(mc, 3e-26)
             omega[i, j] = r["omega_h2"]
 
-            relic_ok = r.get("consistent_planck", False)
+            relic_ok = r.get("consistent_within_theory_err", False)
             indirect_ok = True
             if is_higgsino:
                 ind = higgsino_indirect(mc, dc)
